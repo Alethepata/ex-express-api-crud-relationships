@@ -7,11 +7,23 @@ const index = async (req, res) => {
     const where = {};
     try {
     
-        const { published, title } = req.query;
+        const { published, search } = req.query;
 
         if (published) where.published = published === "true";
 
-        if (title) where.title = { contains: title };
+        if (search) {
+            where.OR = [
+            {
+                title: {
+                contains: search.toLowerCase()
+                }
+            },
+            {
+                content: {
+                contains: search.toLowerCase()
+                }
+            },  
+        ]};
         
         const posts = await prisma.post.findMany({where});
         
