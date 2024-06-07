@@ -14,6 +14,8 @@ const notFound = require('./middlewares/notFound.js');
 
 const serverError = require('./middlewares/serverError.js');
 
+const badRequest = require('./middlewares/badRequest.js');
+
 app.use(express.json());
 
 app.use('/posts', routerPost);
@@ -23,6 +25,8 @@ app.use('/tags', routerTags);
 app.use('/categories', routerCategories);
 
 app.use(notFound);
+
+app.use(badRequest);
 
 app.use(serverError);
 
