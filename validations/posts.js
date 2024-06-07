@@ -80,6 +80,20 @@ const data = {
         isArray: {
             errorMessage: "Il tag deve essere un'array",
             bail:true
+        },
+        custom: {
+            options: async (value) => {
+                const tags = await prisma.tag.findMany({
+                    where: {
+                        id: {in: value}
+                    }
+                })
+                console.log(tags)
+                if (value.length !== tags.length) {
+                    throw new Error('Uno o più tag inesistenti');
+                }
+                return true;
+            }
         }
     }
 }
