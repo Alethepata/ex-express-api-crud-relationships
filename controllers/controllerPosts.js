@@ -25,7 +25,21 @@ const index = async (req, res) => {
             },  
         ]};
         
-        const posts = await prisma.post.findMany({where});
+        const posts = await prisma.post.findMany({
+            where,
+            include: {
+                tags: {
+                    select: {
+                        name:true
+                    }
+                },
+                category: {
+                    select: {
+                        name:true
+                    }
+                }
+            }
+        });
         
         res.status(200).json(posts)
         
@@ -39,6 +53,18 @@ const show = async (req, res) => {
         const post = await prisma.post.findUnique({
             where: {
                 slug: req.params.slug
+            },
+            include: {
+                tags: {
+                    select: {
+                        name:true
+                    }
+                },
+                category: {
+                    select: {
+                        name:true
+                    }
+                }
             }
         })
 
@@ -52,7 +78,7 @@ const show = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const { title, image, content, published } = req.body;
+        const { title, image, content, published, tags, categoryId } = req.body;
     
         const posts = await prisma.post.findMany();
     
@@ -61,11 +87,31 @@ const create = async (req, res) => {
             slug:createSlug(title, posts),
             image,
             content,
-            published
+            published,
+            tags: {
+                connect : tags.map(id=> ({id}))
+            }
     
         }
 
-        const post = await prisma.post.create({ data });
+        if (categoryId) {
+            data.categoryId = categoryId
+        }
+
+        const post = await prisma.post.create({
+            data,
+            include: {
+            tags: {
+                select: {
+                    name:true
+                }
+            },
+            category: {
+                select: {
+                    name:true
+                }
+            }
+        }});
         
         res.status(200).json(post)
 
@@ -78,11 +124,41 @@ const update = async (req, res) => {
     try {
         const { slug } = req.params;
 
+        const { title, image, content, published, tags, categoryId } = req.body;
+     
+        const data = {
+            title,
+            image,
+            content,
+            published,
+            tags: {
+                set : tags.map(id=> ({id}))
+            }
+    
+        }
+
+        if (categoryId) {
+            data.categoryId = categoryId
+        }
+
         const post = await prisma.post.update({
             where: {
                 slug: slug,
             },
-            data: req.body
+            data,
+            include: {
+                tags: {
+                    select: {
+                        name:true
+                    }
+                },
+                category: {
+                    select: {
+                        name:true
+                    }
+                }
+            }
+
         });
 
         res.status(200).json(post)
