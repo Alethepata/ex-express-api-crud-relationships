@@ -7,6 +7,9 @@ const validator = require('../middlewares/validator.js');
 
 const { data } = require('../validations/posts.js');
 
+const { slugParams } = require('../validations/generic.js');
+
+router.use('/:slug', validator(slugParams));
 
 router.get('/', index);
 
