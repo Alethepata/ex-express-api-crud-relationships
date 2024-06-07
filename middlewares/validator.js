@@ -5,7 +5,7 @@ module.exports = (schema) => {
         const result = validationResult(req)
         const message = result.array().map(message => message.msg);
         if (!result.isEmpty()) {
-            return res.status(400).json({errors: result.array()})
+            return res.status(400).json({errors: message})
         }
         next()
 
