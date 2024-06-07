@@ -29,7 +29,7 @@ const create = async (req, res) => {
         const { name } = req.body;
     
         const data = {
-            name
+            name: name.trim()
         }
 
         const category = await prisma.category.create({ data });
@@ -48,7 +48,7 @@ const update = async (req, res) => {
         const { name } = req.body;
 
         const data = {
-            name
+            name: name.trim()
         }
 
         const category = await prisma.category.update({
