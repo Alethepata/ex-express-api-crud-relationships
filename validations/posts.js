@@ -1,6 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+const { trimFunction } = require('../utils/generic.js');
+
 const data = {
     title: {
         in: ["body"],
@@ -16,7 +18,11 @@ const data = {
             errorMessage: "Il titolo deve avere un minimo di 3 e un massimo di 50 caratteri",
             options: { min: 3, max: 50 },
             bail:true
+        },
+        custom: {
+            options: trimFunction("Titolo")
         }
+
     },
     content: {
         in: ["body"],
@@ -32,6 +38,9 @@ const data = {
             errorMessage: "Il contenuto deve avere un minimo di 3 e un massimo di 255 caratteri",
             options: { min: 3, max: 255 },
             bail:true
+        },
+        custom: {
+            options: trimFunction("Contenuto")
         }
     },
     published: {

@@ -83,10 +83,10 @@ const create = async (req, res) => {
         const posts = await prisma.post.findMany();
     
         const data = {
-            title,
+            title: title.trim(),
             slug:createSlug(title, posts),
             image,
-            content,
+            content: content.trim(),
             published,
             tags: {
                 connect : tags.map(id=> ({id}))
@@ -127,9 +127,9 @@ const update = async (req, res) => {
         const { title, image, content, published, tags, categoryId } = req.body;
      
         const data = {
-            title,
+            title: title.trim(),
             image,
-            content,
+            content: content.trim(),
             published,
             tags: {
                 set : tags.map(id=> ({id}))
