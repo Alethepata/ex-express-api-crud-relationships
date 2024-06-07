@@ -65,7 +65,7 @@ const create = async (req, res) => {
             slug:createSlug(title, posts),
             image,
             content,
-            published: Boolean(published)
+            published
     
         }
 
