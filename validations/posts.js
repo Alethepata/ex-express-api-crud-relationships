@@ -1,3 +1,6 @@
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
+
 const data = {
     title: {
         in: ["body"],
@@ -44,6 +47,20 @@ const data = {
             errorMessage: "Category Id deve essere numero intero",
             bail:true
         },
+        custom: {
+            options: async (value) => {
+                const categoryId = parseInt(value);
+                const category = await prisma.category.findUnique({
+                    where: {
+                        id: categoryId
+                    }
+                })
+                if (!category) {
+                    throw new Error('Non esiste questa categoria');
+                }
+                return true;
+            }
+        }
     },
     tags: {
         in: ["body"],
