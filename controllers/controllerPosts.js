@@ -30,7 +30,7 @@ const index = async (req, res) => {
         res.status(200).json(posts)
         
     } catch (error) {
-        res.status(404).json('Non trovato');
+        res.status(500).json('Errore server')
     }
 }
 
@@ -41,10 +41,6 @@ const show = async (req, res) => {
                 slug: req.params.slug
             }
         })
-
-        if (!post) {
-            return res.status(404).json('non trovato');
-        }
 
         res.status(200).json(post)
 
@@ -74,7 +70,7 @@ const create = async (req, res) => {
         res.status(200).json(post)
 
     } catch (error) {
-        res.status(400).json('Dati non inseriti correttamente')
+        res.status(500).json('Errore server')
     }
 }
 
@@ -92,7 +88,7 @@ const update = async (req, res) => {
         res.status(200).json(post)
 
     } catch (error) {
-        res.status(400).json('Dati non inseriti correttamente')
+        res.status(500).json('Errore server')
     }
 }
 
@@ -110,7 +106,7 @@ const destroy = async (req, res) => {
         res.status(200).json(`${post.title} eliminato con successo`)
 
     } catch (error) {
-        res.status(404).json(`${slug} non trovato`)
+        res.status(500).json('Errore server')
     }
 }
 
