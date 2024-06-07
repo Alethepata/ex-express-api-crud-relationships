@@ -74,21 +74,27 @@ const data = {
     tags: {
         in: ["body"],
         notEmpty: {
-            errorMessage: "Il tag è un campo obbligatorio",
+            errorMessage: "I tag sono dei campi obbligatorio",
             bail:true
         },
         isArray: {
-            errorMessage: "Il tag deve essere un'array",
+            errorMessage: "I tag devono essere un'array",
+            bail:true
+        },
+        isInt: {
+            errorMessage: "I tag devono essere numeri interi",
             bail:true
         },
         custom: {
             options: async (value) => {
+                if (value.length == 0) {
+                    throw new Error('I tag sono dei campi obbligatorio'); 
+                }
                 const tags = await prisma.tag.findMany({
                     where: {
                         id: {in: value}
                     }
                 })
-                console.log(tags)
                 if (value.length !== tags.length) {
                     throw new Error('Uno o più tag inesistenti');
                 }
