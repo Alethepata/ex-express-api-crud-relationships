@@ -3,13 +3,18 @@ const router = express.Router();
 
 const { index, show, create, update, destroy } = require('../controllers/controllerPosts.js');
 
+const validator = require('../middlewares/validator.js');
+
+const { data } = require('../validations/posts.js');
+
+
 router.get('/', index);
 
 router.get('/:slug', show);
 
-router.post('/', create);
+router.post('/', validator(data), create);
 
-router.put('/:slug', update);
+router.put('/:slug', validator(data), update);
 
 router.delete('/:slug', destroy);
 
