@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 const createSlug = require('../utils/getSlug.js');
 
-const index = async (req, res) => {
+const index = async (req, res, next) => {
     const where = {};
     try {
     
@@ -44,11 +44,11 @@ const index = async (req, res) => {
         res.status(200).json(posts)
         
     } catch (error) {
-        res.status(500).json('Errore server')
+        next(error);
     }
 }
 
-const show = async (req, res) => {
+const show = async (req, res, next) => {
     try {
         const post = await prisma.post.findUnique({
             where: {
@@ -71,12 +71,12 @@ const show = async (req, res) => {
         res.status(200).json(post)
 
     } catch (error) {
-        res.status(500).json('Errore server')
+        next(error);
     }
 
 }
 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
     try {
         const { title, image, content, published, tags, categoryId } = req.body;
     
@@ -116,11 +116,11 @@ const create = async (req, res) => {
         res.status(200).json(post)
 
     } catch (error) {
-        res.status(500).json('Errore server')
+        next(error);
     }
 }
 
-const update = async (req, res) => {
+const update = async (req, res, next) => {
     try {
         const { slug } = req.params;
 
@@ -164,11 +164,11 @@ const update = async (req, res) => {
         res.status(200).json(post)
 
     } catch (error) {
-        res.status(500).json('Errore server')
+        next(error);
     }
 }
 
-const destroy = async (req, res) => {
+const destroy = async (req, res, next) => {
 
     const { slug } = req.params;
 
@@ -182,7 +182,7 @@ const destroy = async (req, res) => {
         res.status(200).json(`${post.title} eliminato con successo`)
 
     } catch (error) {
-        res.status(500).json('Errore server')
+        next(error);
     }
 }
 

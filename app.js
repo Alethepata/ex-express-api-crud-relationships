@@ -10,6 +10,10 @@ const routerTags = require('./routers/tags.js');
 
 const routerCategories = require('./routers/categories.js');
 
+const notFound = require('./middlewares/notFound.js');
+
+const serverError = require('./middlewares/serverError.js');
+
 app.use(express.json());
 
 app.use('/posts', routerPost);
@@ -17,6 +21,10 @@ app.use('/posts', routerPost);
 app.use('/tags', routerTags);
 
 app.use('/categories', routerCategories);
+
+app.use(notFound);
+
+app.use(serverError);
 
 app.listen(port, () => {
     console.log('Server online')

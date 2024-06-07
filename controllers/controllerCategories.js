@@ -1,16 +1,16 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const index = async (req, res) => { 
+const index = async (req, res, next) => { 
     try {
         const categories = await prisma.category.findMany();
         res.status(200).json(categories)
     } catch (error) {
-        res.status(500).json('Errore server')
+        next(error); 
     }
 }
 
-const show = async (req, res) => { 
+const show = async (req, res, next) => { 
     try {
         const category = await prisma.category.findUnique({
             where: {
@@ -19,12 +19,11 @@ const show = async (req, res) => {
         })
         res.status(200).json(category)
     } catch (error) {
-        console.log(error)
-        res.status(500).json('Errore server')
+        next(error);
     }
 }
 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
     try {
         const { name } = req.body;
     
@@ -37,11 +36,11 @@ const create = async (req, res) => {
         res.status(200).json(category)
 
     } catch (error) {
-        res.status(500).json('Errore server')
+        next(error);
     }
 }
 
-const update = async (req, res) => { 
+const update = async (req, res, next) => { 
     try {
         const { id } = req.params;
 
@@ -60,11 +59,11 @@ const update = async (req, res) => {
 
         res.status(200).json(category)
     } catch (error) {
-        res.status(500).json('Errore server')
+        next(error);
     }
 }
 
-const destroy = async (req, res) => { 
+const destroy = async (req, res, next) => { 
     try {
         const { id } = req.params;
         const category = await prisma.category.delete({
@@ -74,7 +73,7 @@ const destroy = async (req, res) => {
         })
         res.status(200).json(`${category.name} eliminato con successo`)
     } catch (error) {
-        res.status(500).json('Errore server')
+        next(error);
     }
 }
 
