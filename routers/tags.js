@@ -1,8 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-const { create } = require('../controllers/controllerTags.js');
+const { index, show, create, update, destroy } = require('../controllers/controllerTags.js');
 
-router.post('/', create)
+router.get('/', index);
+
+router.get('/:id', show);
+
+router.post('/', create);
+
+router.put('/:id', update);
+
+router.delete('/:id', destroy);
 
 module.exports = router;
